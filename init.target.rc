@@ -56,7 +56,6 @@ on fs
     symlink /lib/modules/reset_modem.ko /system/lib/modules/reset_modem.ko
     symlink /lib/modules/scsi_wait_scan.ko /system/lib/modules/scsi_wait_scan.ko
     symlink /lib/modules/spidev.ko /system/lib/modules/spidev.ko
-    symlink /lib/modules/test-iosched.ko /system/lib/modules/test-iosched.ko
     symlink /lib/modules/vpnclient.ko /system/lib/modules/vpnclient.ko
 
     setprop ro.crypto.fuse_sdcard true
