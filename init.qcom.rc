@@ -33,7 +33,6 @@ on init
     #mkdir /persist 0771 system system
     # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/shell/emulated 0700 shell shell
-    mkdir /mnt/shell/container 0700 system system
     mkdir /storage 0550 system sdcard_r
     mkdir /storage/emulated 0555 root root
 
@@ -46,7 +45,6 @@ on init
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
-    symlink /mnt/shell/container /storage/container
 
     export SECONDARY_STORAGE /storage/extSdCard
     mkdir /storage/extSdCard 0555 root root
@@ -188,10 +186,6 @@ on post-fs-data
     mkdir /data/media 0770 media_rw media_rw
     chown media_rw media_rw /data/media
 
-# we will remap this as /storage/container with the sdcard fuse tool
-    mkdir /data/container 0770 system system
-    chown system system /data/container
-    
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
 
     # Create the directories used by the Wireless subsystem
@@ -690,13 +684,6 @@ service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
     class late_start
     oneshot
 
-# virtual sdcard daemon running as system (1000)
-service container /system/bin/sdcard /data/container /mnt/shell/container 1000 1000
-    class late_start
-    oneshot
-
-    start container
-
 on property:ro.fuse_sdcard=true
     start sdcard
 
@@ -733,8 +720,3 @@ on property:service.bootanim.exit=1
     write /proc/sys/net/ipv6/conf/rmnet_usb1/accept_ra 2
     write /proc/sys/net/ipv6/conf/rmnet_usb2/accept_ra 2
     write /proc/sys/net/ipv6/conf/rmnet_usb3/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_usb0/accept_ra_defrtr 0
-    write /proc/sys/net/ipv6/conf/rmnet_usb1/accept_ra_defrtr 0
-    write /proc/sys/net/ipv6/conf/rmnet_usb2/accept_ra_defrtr 0
-    write /proc/sys/net/ipv6/conf/rmnet_usb3/accept_ra_defrtr 0
-

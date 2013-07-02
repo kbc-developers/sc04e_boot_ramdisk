@@ -71,6 +71,8 @@ on fs
 on fs_selinux
     mount_all fstab.qcom
     setprop ro.crypto.fuse_sdcard true
+    # SEPolicy Reload check should be done after mount data partition
+    setprop selinux.reload_policy 1
 
 # for LogMeIn 
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/system /system rw wait errors=panic remount
@@ -95,10 +97,10 @@ on fs_selinux
     #mount ext4 /dev/block/platform/msm_sdcc.1/by-name/persist /persist nosuid nodev barrier=1
 
     wait /dev/block/platform/msm_sdcc.1/by-name/apnhlos
-    mount vfat /dev/block/platform/msm_sdcc.1/by-name/apnhlos /firmware ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware:s0
+    mount vfat /dev/block/platform/msm_sdcc.1/by-name/apnhlos /firmware ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
 
     wait /dev/block/platform/msm_sdcc.1/by-name/mdm
-    mount vfat /dev/block/platform/msm_sdcc.1/by-name/mdm /firmware-mdm ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware:s0
+    mount vfat /dev/block/platform/msm_sdcc.1/by-name/mdm /firmware-mdm ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
 
     wait /dev/block/platform/msm_sdcc.1/by-name/efs
     check_fs /dev/block/platform/msm_sdcc.1/by-name/efs ext4
@@ -242,42 +244,14 @@ service usf-post-boot /system/bin/sh /system/etc/usf_post_boot.sh
     disabled
     oneshot
 
-service prepare-mobicore /system/bin/sh /system/bin/mobicore-presetup.sh
-    class core
-    user root
-    group root
-    oneshot
-
-service run-mobicore /system/bin/sh /system/bin/mobicore-startup.sh
-    class core
-    user system
-    group system
-
 on property:init.svc.bootanim=stopped
     start usf-post-boot
-    start run-mobicore
     start efsrestorecon
 
 service time_daemon /system/bin/time_daemon
    class late_start
    user root
    group root
-
-# Secure Storage startup
-service prepare-ssdaemon /system/bin/sh /system/bin/ss-presetup.sh
-    class core
-    user root
-    group root
-    oneshot
-
-service secure_storage /system/bin/secure_storage_daemon
-    class core
-    user system
-    group system
-    disabled
-
-on property:ro.securestorage.ready=true
-    start secure_storage
 
 # for LogMeIn 
 service RescueStarter /system/bin/RescueStarter 

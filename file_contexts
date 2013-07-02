@@ -279,8 +279,9 @@
 /data/misc/audio(/.*)?	u:object_r:audio_data_file:s0
 /data/misc/radio(/.*)?	u:object_r:radio_data_file:s0
 /data/system/users(/.*)/wallpaper	u:object_r:wallpaper_file:s0
-/data/.container_[1-9](/.*)	u:object_r:container_app_data_backend:s0
-/data/container/.sdcontainer_[1-9](/.*)	u:object_r:container_app_data_backend:s0
+/data/.container_[1-9](/.*)?	u:object_r:container_app_data_backend:s0
+/data/container(/.*)?	u:object_r:container_app_data_backend:s0
+/data/clipboard/knox(/.*)?  u:object_r:knox_clipboard_file:s0
 
 ############################# 
 # MISC partition file
@@ -307,6 +308,7 @@
 ############################# 
 # Device node
 #
+/dev/adsprpc-smd	u:object_r:adsprpc_device:s0
 /dev/android_mbim	u:object_r:android_mbim:s0
 /dev/android_rndis_qc	u:object_r:radio_device:s0
 /dev/audience_a2220	u:object_r:audio_device:s0
@@ -385,6 +387,7 @@
 /dev/tspdrv	u:object_r:tspdrv_device:s0
 /dev/ttyHS[0-9]*	u:object_r:bluetooth_serial_device:s0
 /dev/ttyHSL[0-9]*	u:object_r:radio_device:s0
+/dev/usf1	u:object_r:usf_device:s0
 /dev/v4l-subdev[0-9]*	u:object_r:camera_device:s0
 /dev/wcnss_wlan	u:object_r:wifi_device:s0
 
@@ -407,6 +410,7 @@
 /system/bin/ATFWD-daemon	u:object_r:ATFWD-daemon_exec:s0
 /system/bin/cnd	u:object_r:cnd_exec:s0
 /system/bin/efsks	u:object_r:efsks_exec:s0
+/system/bin/geomagneticd u:object_r:geomagneticd_exec:s0
 /system/bin/gpsone_daemon	u:object_r:gpsone_daemon_exec:s0
 /system/bin/ks	u:object_r:ks_exec:s0
 /system/bin/location-mq	u:object_r:location-mq_exec:s0
@@ -425,9 +429,10 @@
 /system/bin/secstarter	u:object_r:secstarter_exec:s0
 /system/bin/smdexe	u:object_r:smdexe_exec:s0
 /system/bin/ssr_diag	u:object_r:ssr_diag_exec:s0
+/system/bin/thermald u:object_r:thermald_exec:s0
 /system/bin/thermal-engine	u:object_r:thermald_exec:s0
 /system/bin/time_daemon	u:object_r:time_daemon_exec:s0
-#line 1 "vendor/samsung/common/sepolicy/qcom_common/jfltedcm/file_contexts"
+#line 1 "vendor/samsung/common/sepolicy/qcom_common/jgedlte/file_contexts"
 /dev/block/mmcblk0p1    u:object_r:apnhlosblk_device:s0
 /dev/block/mmcblk0p2    u:object_r:mdmblk_device:s0
 /dev/block/mmcblk0p9	u:object_r:padblk_device:s0
@@ -445,58 +450,5 @@
 /dev/block/mmcblk0p24   u:object_r:fsgblk_device:s0
 /dev/block/mmcblk0p25   u:object_r:ssdblk_device:s0
 /dev/block/mmcblk0p26   u:object_r:persdatablk_device:s0
-/dev/block/mmcblk0p28   u:object_r:carrierblk_device:s0
 /dev/block/mmcblk0p29   u:object_r:userdatablk_device:s0
-/dev/block/mmcblk1   u:object_r:sdcardblk_device:s0
-/dev/block/mmcblk1p.*   u:object_r:sdcardblk_device:s0
 
-
-#felica start
-/dev/ttyHSL2				u:object_r:nfcfelica_device:s0
-/dev/snfc_uart				u:object_r:nfc_device:s0
-/dev/snfc_pon				u:object_r:nfc_device:s0
-/dev/snfc_hsel				u:object_r:nfc_device:s0
-/dev/snfc_intu_poll			u:object_r:nfc_device:s0
-/dev/snfc_available_poll	u:object_r:nfc_device:s0
-/dev/snfc_rfs				u:object_r:nfc_device:s0
-/dev/snfc_rfs_poll			u:object_r:nfc_device:s0
-/dev/uartcc					u:object_r:nfc_device:s0
-/dev/felica_cen				u:object_r:nfcfelica_device:s0
-
-/dev/felica					u:object_r:felica_device:s0
-/dev/felica_pon				u:object_r:felica_device:s0
-/dev/felica_rfs				u:object_r:felica_device:s0
-/dev/felica_rws				u:object_r:felica_device:s0
-/dev/felica_ant				u:object_r:felica_device:s0
-/dev/felica_int_poll		u:object_r:felicashell_device:s0
-/dev/felica_uid				u:object_r:felica_device:s0
-#felica end
-
-#felica start
-/system/bin/fsslcmnd		u:object_r:fsslcmnd_exec:s0
-/system/bin/mfdp			u:object_r:mfdp_exec:s0
-/system/bin/mfsc			u:object_r:mfsc_exec:s0
-#felica end
-
-/system/bin/mfescand			u:object_r:mfescand_exec:s0
-
-#TMM
-/system/bin/MmbCaCasDrmMw	u:object_r:mmb_mw_exec:s0
-/system/bin/MmbFcCtlMw	u:object_r:mmb_mw_exec:s0
-/system/bin/MmbStCtlMwService	u:object_r:mmb_mw_exec:s0
-/system/bin/MmbFcMp4MwServer	u:object_r:mmb_mw_exec:s0
-/system/bin/MmbFcLiceMwServer	u:object_r:mmb_mw_exec:s0
-/system/bin/MmbStRecCmMwService	u:object_r:mmb_mw_exec:s0
-
-/data/mmb/MmbCaCasDrmMw(/.*)?		u:object_r:mmb_data_file:s0
-
-# for oneseg and mmcblk0p16
-/data/one-seg(/.*)? u:object_r:oneseg_mw_exec:s0
-/sdcard/oneseg(/.*)? u:object_r:oneseg_mw_exec:s0
-/data/data/com.samsung.sec.mtv(/.*)?    u:object_r:oneseg_mw_exec:s0
-/system/bin/nexprocess            u:object_r:oneseg_mw_exec:s0
-/system/bin/broadcastProcessObserver            u:object_r:oneseg_mw_exec:s0
-/system/bin/BMLEngineServer            u:object_r:oneseg_mw_exec:s0
-/system/bin/OneSegDsmcc            u:object_r:oneseg_mw_exec:s0
-/system/bin/OneSegTsDemux            u:object_r:oneseg_mw_exec:s0
-/system/bin/SDtvService            u:object_r:oneseg_mw_exec:s0
