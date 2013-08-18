@@ -40,7 +40,7 @@ sysclktz 0
 loglevel 3
 
 # setup the global environment
-    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
+    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/mbs/bin
     export LD_LIBRARY_PATH /vendor/lib:/system/lib
     export ANDROID_BOOTLOGO 1
     export ANDROID_ROOT /system
@@ -100,6 +100,8 @@ loglevel 3
     mkdir /mnt/fuse 0700 root system
     mount tmpfs tmpfs /mnt/fuse mode=0775,gid=1000
 
+#@ext4sd_mkdir
+
     write /proc/sys/kernel/panic_on_oops 1
     write /proc/sys/kernel/hung_task_timeout_secs 0
     write /proc/cpu/alignment 4
@@ -114,6 +116,7 @@ loglevel 3
     write /proc/sys/net/ipv4/ping_group_range "0 2147483647"
     write /proc/sys/kernel/sched_rt_runtime_us 950000
     write /proc/sys/kernel/sched_rt_period_us 1000000
+    write /proc/sys/kernel/feature_aosp 1
 
 # Create cgroup mount points for process groups
     mkdir /dev/cpuctl
@@ -149,6 +152,12 @@ loglevel 3
 # Allow everybody to read the xt_qtaguid resource tracking misc dev.
 # This is needed by any process that uses socket tagging.
     chmod 0644 /dev/xt_qtaguid
+
+# void swichable pair
+    setprop ro.vold.switchablepair "/storage/sdcard0,/storage/sdcard1"
+
+# bootanimation wait one loop
+    setprop sys.bootanim_wait 1
 
 on fs
 # mount mtd partitions
@@ -585,8 +594,8 @@ service media /system/bin/mediaserver
 
 service bootanim /system/bin/bootanimation
     class main
-    user graphics
-    group graphics
+    user root
+    group root media graphics
     disabled
     oneshot
 

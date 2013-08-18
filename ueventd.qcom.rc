@@ -128,10 +128,21 @@
 /sys/devices/i2c-12/12-*  enable  0664 system system
 /sys/devices/i2c-12/12-*  poll_delay 0664 system system
 
+# tzic driver
+/dev/tzic				  0644	 system		system
+
 # MDM devices
 /dev/block/mmcblk0p13     0660	system	    radio
 /dev/block/mmcblk0p14     0660	system	    radio
 /dev/block/mmcblk0p15     0660	system	    radio
+/dev/block/mmcblk0p16     0600	root        root
+/dev/block/mmcblk0p17     0600	root        root
+
+
+# Not sure if this will work properly
+/dev/block/platform/msm_sdcc.1/by-name/m9kefs1     0660	system	    radio
+/dev/block/platform/msm_sdcc.1/by-name/m9kefs2     0660	system	    radio
+/dev/block/platform/msm_sdcc.1/by-name/m9kefs3     0660	system	    radio
 
 # Felica
 /dev/felica		0666	root		root
