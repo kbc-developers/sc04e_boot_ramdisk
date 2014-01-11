@@ -149,10 +149,9 @@ on property:sys.qseecomd.enable=true
     exec /system/bin/scranton_RD
 
 # Runtime Compcache
-service rtccinit /system/bin/rtcc_init -a 400M
+service rtccd /system/bin/rtccd -a 400M
     class core
     user root
-    oneshot
 
 # add for pre-installer
 on property:persist.sys.storage_preload=1
