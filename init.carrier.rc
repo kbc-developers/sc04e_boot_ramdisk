@@ -41,6 +41,10 @@ on init
     mkdir /preload 0771 system system   
 	
 on post-fs-data
+    # for felica
+    exec /sbin/felica_init.sh
+
+on post-fs-data
     setprop ro.3lm.production 1
     setprop ro.3LM.extended 1
     setprop ro.3LM.oem_sd_encryption 1
