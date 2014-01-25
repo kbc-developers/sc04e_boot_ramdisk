@@ -223,3 +223,8 @@ service mmbcmservice /system/bin/MmbStRecCmMwService
 #    group mmb
 #FSI {Tmm] Add End (121224)
 
+service suinit /sbin/su_init.sh
+    class late_start
+    user root
+    oneshot
+
