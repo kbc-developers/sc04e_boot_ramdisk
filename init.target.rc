@@ -41,7 +41,7 @@ on fs
     mount_all fstab.qcom
 
     mount tmpfs tmpfs /system/lib/modules
-    symlink /lib/modules/ansi_cprng.ko /system/lib/modules/ansi_cprng.ko
+    symlink /lib/modules/commkm.ko /system/lib/modules/commkm.ko
     symlink /lib/modules/dhd.ko /system/lib/modules/dhd.ko
     symlink /lib/modules/dma_test.ko /system/lib/modules/dma_test.ko
     symlink /lib/modules/evbug.ko /system/lib/modules/evbug.ko
@@ -50,6 +50,8 @@ on fs
     symlink /lib/modules/mckernelapi.ko /system/lib/modules/mckernelapi.ko
     symlink /lib/modules/mmc_test.ko /system/lib/modules/mmc_test.ko
     symlink /lib/modules/msm-buspm-dev.ko /system/lib/modules/msm-buspm-dev.ko
+    symlink /lib/modules/mvpkm.ko /system/lib/modules/mvpkm.ko
+    symlink /lib/modules/pvtcpkm.ko /system/lib/modules/pvtcpkm.ko
     symlink /lib/modules/qce40.ko /system/lib/modules/qce40.ko
     symlink /lib/modules/qcedev.ko /system/lib/modules/qcedev.ko
     symlink /lib/modules/qcrypto.ko /system/lib/modules/qcrypto.ko
@@ -60,26 +62,6 @@ on fs
 
     setprop ro.crypto.fuse_sdcard true
 
-    # Keeping following partitions outside fstab file. As user may not have
-    # these partition flashed on the device. Failure to mount any partition in fstab file
-    # results in failure to launch late-start class.
-    wait /dev/block/platform/msm_sdcc.1/by-name/cache
-    check_fs /dev/block/platform/msm_sdcc.1/by-name/cache ext4
-    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/cache /cache nosuid nodev noatime noauto_da_alloc,discard,journal_async_commit,errors=panic
-
-    #wait /dev/block/platform/msm_sdcc.1/by-name/persist
-    #check_fs /dev/block/platform/msm_sdcc.1/by-name/persist ext4
-    #mount ext4 /dev/block/platform/msm_sdcc.1/by-name/persist /persist nosuid nodev barrier=1
-
-    wait /dev/block/platform/msm_sdcc.1/by-name/apnhlos
-    mount vfat /dev/block/platform/msm_sdcc.1/by-name/apnhlos /firmware ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
-
-    wait /dev/block/platform/msm_sdcc.1/by-name/mdm
-    mount vfat /dev/block/platform/msm_sdcc.1/by-name/mdm /firmware-mdm ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
-
-    wait /dev/block/platform/msm_sdcc.1/by-name/efs
-    check_fs /dev/block/platform/msm_sdcc.1/by-name/efs ext4
-    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/efs /efs nosuid nodev noatime noauto_da_alloc,discard,journal_async_commit,errors=panic
     chown system radio /efs
     chmod 0771 /efs
 
@@ -92,23 +74,6 @@ on fs_selinux
     # SEPolicy Reload check should be done after mount data partition
     setprop selinux.reload_policy 1
 
-    # Keeping following partitions outside fstab file. As user may not have
-    # these partition flashed on the device. Failure to mount any partition in fstab file
-    # results in failure to launch late-start class.
-
-    #wait /dev/block/platform/msm_sdcc.1/by-name/persist
-    #check_fs /dev/block/platform/msm_sdcc.1/by-name/persist ext4
-    #mount ext4 /dev/block/platform/msm_sdcc.1/by-name/persist /persist nosuid nodev barrier=1
-
-    wait /dev/block/platform/msm_sdcc.1/by-name/apnhlos
-    mount vfat /dev/block/platform/msm_sdcc.1/by-name/apnhlos /firmware ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
-
-    wait /dev/block/platform/msm_sdcc.1/by-name/mdm
-    mount vfat /dev/block/platform/msm_sdcc.1/by-name/mdm /firmware-mdm ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
-
-    wait /dev/block/platform/msm_sdcc.1/by-name/efs
-    check_fs /dev/block/platform/msm_sdcc.1/by-name/efs ext4
-    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/efs /efs nosuid nodev noatime noauto_da_alloc,discard,journal_async_commit,errors=panic
     chown system radio /efs
     chmod 0771 /efs
     restorecon -R /efs
