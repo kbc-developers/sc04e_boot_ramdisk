@@ -41,6 +41,9 @@ on init
 on post-fs-data
     exec /system/bin/sh /sbin/felica_init.sh
 
+# NFC
+    symlink /dev/felica_cen /dev/snfc_cen
+
 on boot
 # FeliCa
     mkdir /efs/FeliCaLock 0777 system 9004
