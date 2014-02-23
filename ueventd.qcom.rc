@@ -132,3 +132,6 @@
 /dev/block/mmcblk0p13     0660	system	    radio
 /dev/block/mmcblk0p14     0660	system	    radio
 /dev/block/mmcblk0p15     0660	system	    radio
+
+# for ciq bridge
+/dev/ciq_bridge		  0660	system	    system

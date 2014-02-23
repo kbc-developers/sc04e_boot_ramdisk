@@ -1,41 +1,67 @@
+# Copyright (c) 2012, The Linux Foundation. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of Code Aurora nor
+#       the names of its contributors may be used to endorse or promote
+#       products derived from this software without specific prior written
+#       permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
 # Felica
-/dev/felica               0666    root      root
-/dev/felica_pon           0666    root      root
-/dev/felica_cen           0666    root      root
-/dev/felica_rfs           0444    root      root
-/dev/felica_rws           0666    root      root
-/dev/felica_ant           0666    root      root
-/dev/felica_int_poll      0400    root      root
-/dev/felica_uid           0222    root      root
+/dev/felica               0660    mfc      system
+/dev/felica_pon           0660    mfc      system
+/dev/felica_cen           0660    mfc      felicalock
+/dev/felica_rfs           0440    mfc      system
+/dev/felica_rws           0660    mfc      system
+/dev/felica_ant           0660    mfc      system
+/dev/felica_int_poll      0400    mfc      system
+/dev/felica_uid           0220    mfc      system
 
 # NFC
 /dev/ttyHSL2              0660    nfc       nfc
 /dev/snfc_uart            0660    nfc       nfc
+/dev/snfc_cen             0440    nfc       system
 /dev/snfc_pon             0220    nfc       nfc
-/dev/snfc_hsel            0666    nfc       nfc
-/dev/snfc_intu_poll       0444    nfc       nfc
+/dev/snfc_hsel            0660    nfc       nfc
+/dev/snfc_intu_poll       0440    nfc       nfc
 /dev/snfc_available_poll  0440    nfc       nfc
-/dev/snfc_rfs             0444    nfc       nfc
+/dev/snfc_rfs             0440    nfc       nfc
 /dev/snfc_rfs_poll        0440    nfc       nfc
 /dev/uartcc               0660    nfc       nfc
 
+#JPN CPRM
+/dev/block/mmcblk1	0660	root	system
+
 # ISDB-Tmm 
-/dev/mmtuneri2c			  0666	 system      root		
-/dev/mmtunerspi			  0666	 system		 root
+/dev/mmtuneri2c			  0660	 system      system		
+/dev/mmtunerspi			  0660	 system		 system
 
 # Tmm Add start
 /dev/hw_random            0664   system     system
 # Tmm Add end
 
-#JPN CPRM
-/dev/block/mmcblk1	0660	root	system
-
 # tzic driver
 /dev/tzic				  0644	 system		system
 
-# MDM devices (for Write protection)
+# MDM devices
 /dev/block/mmcblk0p13     0660	system	    radio
 /dev/block/mmcblk0p14     0660	system	    radio
 /dev/block/mmcblk0p15     0660	system	    radio
-/dev/block/mmcblk0p16     0600	root        root
-/dev/block/mmcblk0p17     0600	root        root

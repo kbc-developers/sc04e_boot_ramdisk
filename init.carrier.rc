@@ -25,31 +25,21 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 on init
-    
-     # For Absolute Persistence Partition
-    mkdir /persdata 0755 system system
-    mkdir /persdata/absolute 0750 system system
-
-    wait /dev/block/mmcblk0p26
-    mount ext4 /dev/block/mmcblk0p26 /persdata/absolute nosuid nodev barrier=1
-    chown system system /persdata
-    chmod 0755 /persdata
-    chown system system /persdata/absolute
-    chmod 0750 /persdata/absolute
 
     export EXTERNAL_STORAGE_DOCOMO /storage/extSdCard
-    mkdir /preload 0771 system system   
-	
-on post-fs-data
-    # for felica
-    exec /sbin/felica_init.sh
 
 on post-fs-data
+
+# 3LM settings
     setprop ro.3lm.production 1
     setprop ro.3LM.extended 1
     setprop ro.3LM.oem_sd_encryption 1
-    setprop ro.3LM.oem_manifest 3	
-    
+    setprop ro.3LM.oem_manifest 3
+
+# FeliCa
+    exec /sbin/felica_init.sh
+
+    mkdir /efs/FeliCaLock 0770 system felicalock
 #FSI {Tmm] Add Start (121224)
     mkdir /data/mmb
     mkdir /data/mmb/MmbCaCasDrmMw 0700 casdrm sdcard_rw
@@ -57,7 +47,7 @@ on post-fs-data
     mkdir /data/mmb/MmbFcCtlMw/dic 0700 fcctl sdcard_rw
     mkdir /data/mmb/MmbStCtlMw 0700 stctl sdcard_rw
     mkdir /data/mmb/MmbFcMp4Mw 0700 fcmp4 sdcard_rw
-    mkdir /data/mmb/common 0775 root sdcard_rw
+    mkdir /data/mmb/common 0770 root sdcard_rw
     mkdir /data/mmb/common/MmbFcCtlMw 0700 fcctl sdcard_rw
         chown root mmb /data/mmb
 
@@ -70,26 +60,25 @@ on post-fs-data
     chmod 775 /data/mmb
     mkdir /data/mmb/MmbFcCtlMwMnt
     chown fcctl sdcard_rw /data/mmb/MmbFcCtlMwMnt
-    chmod 700 /data/mmb/MmbFcCtlMwMnt
+    chmod 755 /data/mmb/MmbFcCtlMwMnt
 
-	mkdir /data/data/.drm/.sec_sctime  
-	chmod 775 /data/data/.drm/.sec_sctime 
-	chown system system /data/data/.drm/.sec_sctime
-	
+        mkdir /data/data/.drm/.sec_sctime
+        chmod 775 /data/data/.drm/.sec_sctime
+        chown system system /data/data/.drm/.sec_sctime
+
+    chmod 664 /dev/hw_random
+    chmod 640 /dev/tzic
+    chown system mmb /dev/tzic
+
+    chmod 0770 /data/mmb/common/manifest
+    chown root mmb /data/mmb/common/manifest
+
 #FSI {Tmm] Add End (121224)
 
-# NFC
-    symlink /dev/felica_cen /dev/snfc_cen
-
-# FeliCa
-    mkdir /efs/FeliCaLock 0770 system felicalock
-
-# Permissions for Camera
-    chown media system /sys/class/camera/flash/movie_brightness
-
 on boot
-    
+
 # permissions for bluetooth.
+    mkdir /efs/bluetooth 0775 radio system
     setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
     chown bluetooth net_bt_stack ro.bt.bdaddr_path
     chown bluetooth net_bt_stack /dev/ttyHS0
@@ -105,21 +94,18 @@ on boot
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwrite
     chmod 0600 /dev/btlock
     chown bluetooth bluetooth /dev/btlock
-    
+
+
 	chown radio system /sys/class/sec/switch/usb_sel
 	chown radio system /sys/class/sec/switch/usb_state
 	chown radio system /sys/class/sec/switch/uart_sel
-	chown radio system /sys/class/sec/switch/chg_type
 	chown radio system /sys/class/sec/switch/apo_factory
+# ISDB-Tmm 
+    chown system system /dev/mmtuneri2c
+    chown system system /dev/mmtunerspi
+    chmod 0660 /dev/mmtuneri2c
+    chmod 0660 /dev/mmtunerspi
 
-# JPN: Create folder for Remote Lock service
-    mkdir /data/system 0775 system system
-
-# JPN: For MobileTV [ISDBT] \android\device\samsung\jaltedcm\init.jfltedcm.rc
-    chown system system /dev/isdbt
-    chmod 0660 /dev/isdbt
-    chown system system /dev/s3c-tsi
-    chmod 0660 /dev/s3c-tsi
 
 # JPN: For MobileTV [ISDBT] \android\device\samsung\jaltedcm\init.jfltedcm.rc
     mkdir /data/atsc-mh 0775 system system
@@ -128,7 +114,11 @@ on boot
     chown system system /data/one-seg
     chmod 0775 /data/atsc-mh
     chmod 0775 /data/one-seg   
- 
+
+# JPN : Create folder for LongLife Mode
+    mkdir /data/longlife 0775 system system
+    chown system system /data/longlife
+    chmod 0775 /data/longlife
 
 # JPN: For MobileTV [ISDBT] \android\device\samsung\jaltedcm\init.jfltedcm.rc
 service nexplayer /system/bin/nexprocess
@@ -147,47 +137,43 @@ service TvoutService_C /system/bin/bintvoutservice
     class main
     user system
     group system
-
 # MM Property
-on property:sys.qseecomd.enable=true
-    exec /system/bin/scranton_RD
+#on property:sys.qseecomd.enable=true
+#    exec /system/bin/scranton_RD
 
 # Runtime Compcache
-service rtccd /system/bin/rtccd -a 400M
+service rtccd /system/bin/rtccd2 -a 500M
     class core
     user root
-
-# add for pre-installer
-on property:persist.sys.storage_preload=1
-    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/hidden /preload nosuid nodev noatime wait ro
-    setprop storage.preload.complete 1
-
-on property:persist.sys.storage_preload=0
-    exec /system/bin/umount /preload
-
-# JPN: remote lock
-service init_devadmin /system/vendor/bin/init_devadmin.sh
-    user system
-    group system
     oneshot
 
+# bluetooth dhcp config
+service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
 
 # docomo virus scan - start daemon
-service mfescand /system/bin/mfescand 
+service mfescand /system/bin/mfescand
     class main
     socket mfescand stream 600 system system
+
+service iprenew_bt-pan /system/bin/dhcpcd -n
+    class late_start
+    disabled
+    oneshot
 
 # Felica
 service mfsc /system/bin/mfsc
     class core
     user root
-    group system
+    group system felicalock nfc
     oneshot
     
 service mfdp /system/bin/mfdp
     class core
     user root
-    group system
+    group system felicalock nfc
     oneshot
 
 #FSI {Tmm] Add Start (121224)
