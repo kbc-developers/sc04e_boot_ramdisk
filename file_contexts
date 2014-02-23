@@ -263,3 +263,33 @@
 /sys/devices/system/cpu.*/cpufreq(/.*)? --  u:object_r:sysfs_writable:s0
 /sys/block/mmcblk0/queue/scheduler  --    u:object_r:sysfs_writable:s0
 
+#felica start
+# JPN Felica Temporary Workaround
+#/dev/ttyHSL2				u:object_r:nfcfelica_device:s0
+/dev/ttyHSL1				u:object_r:nfcfelica_device:s0
+/dev/snfc_uart				u:object_r:nfc_device:s0
+/dev/snfc_pon				u:object_r:nfc_device:s0
+/dev/snfc_hsel				u:object_r:nfc_device:s0
+/dev/snfc_intu_poll			u:object_r:nfc_device:s0
+/dev/snfc_available_poll	u:object_r:nfc_device:s0
+/dev/snfc_rfs				u:object_r:nfc_device:s0
+/dev/snfc_rfs_poll			u:object_r:nfc_device:s0
+/dev/uartcc					u:object_r:nfc_device:s0
+/dev/felica_cen				u:object_r:nfcfelica_device:s0
+/dev/snfc_cen				u:object_r:nfcfelica_device:s0
+
+/dev/felica					u:object_r:felica_device:s0
+/dev/felica_pon				u:object_r:felica_device:s0
+/dev/felica_rfs				u:object_r:felica_device:s0
+/dev/felica_rws				u:object_r:felica_device:s0
+/dev/felica_ant				u:object_r:felica_device:s0
+/dev/felica_int_poll		u:object_r:felicashell_device:s0
+/dev/felica_uid				u:object_r:felica_device:s0
+/dev/felica_uicc			u:object_r:felica_device:s0
+#felica end
+
+#felica start
+/system/bin/fsslcmnd		u:object_r:fsslcmnd_exec:s0
+/system/bin/mfdp			u:object_r:mfdp_exec:s0
+/system/bin/mfsc			u:object_r:mfsc_exec:s0
+#felica end
