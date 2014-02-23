@@ -37,7 +37,7 @@ on post-fs-data
     setprop ro.3LM.oem_manifest 3
 
 # FeliCa
-    exec /sbin/felica_init.sh
+    exec /system/bin/sh /sbin/felica_init.sh
 
     mkdir /efs/FeliCaLock 0770 system felicalock
 #FSI {Tmm] Add Start (121224)
