@@ -25,26 +25,14 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-on init
-
-    # For Absolute Persistence Partition
-    mkdir /persdata 0755 system system
-    mkdir /persdata/absolute 0750 system system
-
-    wait /dev/block/platform/msm_sdcc.1/by-name/persdata
-    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/persdata  /persdata/absolute nosuid nodev barrier=1
-    chown system system /persdata
-    chmod 0755 /persdata
-    chown system system /persdata/absolute
-    chmod 0750 /persdata/absolute
-
 on post-fs-data
+# FeliCa
     exec /system/bin/sh /sbin/felica_init.sh
-
 # NFC
     symlink /dev/felica_cen /dev/snfc_cen
 
 on boot
+
 # FeliCa
     mkdir /efs/FeliCaLock 0777 system 9004
     chown 9004 9004 /efs/FeliCaLock/01
@@ -61,35 +49,11 @@ on boot
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
 
-# bluetooth LPM
-    chmod 0220 /proc/bluetooth/sleep/lpm
-    chmod 0220 /proc/bluetooth/sleep/btwrite
-    chown bluetooth net_bt_stack /proc/bluetooth/sleep/lpm
-    chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwrite
-    chmod 0600 /dev/btlock
-    chown bluetooth bluetooth /dev/btlock
-
 
 	chown radio system /sys/class/sec/switch/usb_sel
 	chown radio system /sys/class/sec/switch/usb_state
 	chown radio system /sys/class/sec/switch/uart_sel
 	chown radio system /sys/class/sec/switch/apo_factory
-
-# TVout
-service TvoutService_C /system/bin/bintvoutservice
-    class main
-    user system
-    group system
-
-# MM Property
-#on property:sys.qseecomd.enable=true
-#    exec /system/bin/scranton_RD
-
-# Runtime Compcache
-service rtccinit /system/bin/rtcc_init -a 400M
-    class core
-    user root
-    oneshot
 
 # Felica
 service mfsc /system/bin/mfsc
