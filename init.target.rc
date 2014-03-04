@@ -39,6 +39,11 @@ service ril-qmi /system/bin/sh /init.qcom.ril.sh
 
 on fs
     mount_all fstab.qcom
+
+    mount tmpfs tmpfs /system/lib/modules
+    symlink /lib/modules/scsi_wait_scan.ko /system/lib/modules/scsi_wait_scan.ko
+    symlink /lib/modules/dhd.ko /system/lib/modules/dhd.ko
+
     setprop ro.crypto.fuse_sdcard true
 
     # Keeping following partitions outside fstab file. As user may not have
@@ -70,6 +75,11 @@ on fs
 
 on fs_selinux
     mount_all fstab.qcom
+
+    mount tmpfs tmpfs /system/lib/modules
+    symlink /lib/modules/scsi_wait_scan.ko /system/lib/modules/scsi_wait_scan.ko
+    symlink /lib/modules/dhd.ko /system/lib/modules/dhd.ko
+
     setprop ro.crypto.fuse_sdcard true
     # SEPolicy Reload check should be done after mount data partition
     setprop selinux.reload_policy 1
