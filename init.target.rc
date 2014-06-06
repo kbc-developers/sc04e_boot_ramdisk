@@ -37,7 +37,6 @@ on fs
     mount_all fstab.qcom
 
     mount tmpfs tmpfs /system/lib/modules
-    symlink /lib/modules/ansi_cprng.ko /system/lib/modules/ansi_cprng.ko
     symlink /lib/modules/dhd.ko /system/lib/modules/dhd.ko
     symlink /lib/modules/dma_test.ko /system/lib/modules/dma_test.ko
     symlink /lib/modules/evbug.ko /system/lib/modules/evbug.ko
@@ -52,7 +51,6 @@ on fs
     symlink /lib/modules/reset_modem.ko /system/lib/modules/reset_modem.ko
     symlink /lib/modules/scsi_wait_scan.ko /system/lib/modules/scsi_wait_scan.ko
     symlink /lib/modules/spidev.ko /system/lib/modules/spidev.ko
-    symlink /lib/modules/vpnclient.ko /system/lib/modules/vpnclient.ko
 
     setprop ro.crypto.fuse_sdcard true
 
@@ -404,6 +402,7 @@ on property:qcom.thermal=thermal-engine
 
 service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
     user root
+    group root system
     disabled
 
 service kickstart /system/bin/qcks -i /firmware-mdm/image/
